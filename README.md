@@ -1,5 +1,5 @@
 # simple-logger
-golang simpler logger
+golang simple logger
 
 ## Env var options
 - LOG_LEVEL `[ debug, trace, info, warn, error, fatal, panic ]` sets logging level
