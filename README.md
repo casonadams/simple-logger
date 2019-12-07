@@ -11,13 +11,21 @@ golang simpler logger
 
 ## Example
 
+```bash
+go get -u github.com/casonadams/simple-logger/v2
+```
+
 ```go
+package main
+
 import logger "github.com/casonadams/simple-logger/v2"
 
-log := logger.NewLogger("test")
-log.Info("Hello World")
-log.Infof("Hello Earth %v", 5)
-log.Warn("Warn message")
+func main() {
+        log := logger.NewLogger("test")
+        log.Info("Hello World")
+        log.Infof("Hello Earth %v", 5)
+        log.Warn("Warn message")
+}
 ```
 
 ## Run

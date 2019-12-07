@@ -191,14 +191,14 @@ func (l Logger) Errorf(format string, args ...interface{}) {
 }
 
 // Panic logs fatal message and exits (1)
-func (l Logger) Panic(msg string) {
+func (l Logger) Fatal(msg string) {
 	if l.Level >= level["FATAL"] {
 		l.prefix("FATAL").Fatalf(msg)
 	}
 }
 
 // Panicf logs fatal message and exits (1)
-func (l Logger) Panicf(format string, args ...interface{}) {
+func (l Logger) Fatalf(format string, args ...interface{}) {
 	if l.Level >= level["FATAL"] {
 		l.prefix("FATAL").Fatalf(fmt.Sprintf(format, args...))
 	}
