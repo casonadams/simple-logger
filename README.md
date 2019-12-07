@@ -35,4 +35,5 @@ Should only print warn message
 LOG_LEVEL=debug go run .
 ```
 
-![output](https://github.com/casonadams/simple-logger/examples/output.png)
+![Example Output](examples/output.png)
+
