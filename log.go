@@ -76,7 +76,6 @@ func NewLogger(name string) *Logger {
 	}
 
 	logger := log.New(log.Writer(), "", 0)
-	log.Writer()
 
 	return &Logger{
 		Level:    logLevel,

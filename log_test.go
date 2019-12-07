@@ -183,12 +183,21 @@ func TestNewLoggerUTC(t *testing.T) {
 	}
 }
 
-func BenchmarkDebug(b *testing.B) {
+func BenchmarkInfoWrite(b *testing.B) {
 	os.Setenv("LOG_LEVEL", "DEBUG")
-	os.Setenv("LOG_COLOR", "false")
+	os.Setenv("LOG_COLOR", "true")
+	os.Setenv("LOG_FUNC", "true")
+	os.Setenv("LOG_DATE", "true")
 	l := logger.NewLogger("test")
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		l.Debug("ABCDEFGHIJLKMNOPQRSTUVWXYZ1234567890abcdefghijklmnopqrstuvwxyz")
+		l.Info("ABCDEFGHIJLKMNOPQRSTUVWXYZ1234567890abcdefghijklmnopqrstuvwxyz")
+	}
+}
+
+func BenchmarkNewLogger(b *testing.B) {
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		logger.NewLogger("test")
 	}
 }
