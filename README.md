@@ -12,13 +12,13 @@ golang simpler logger
 ## Example
 
 ```bash
-go get -u github.com/casonadams/simple-logger/v2
+go get -u github.com/casonadams/simple-logger
 ```
 
 ```go
 package main
 
-import logger "github.com/casonadams/simple-logger/v2"
+import logger "github.com/casonadams/simple-logger"
 
 func main() {
 	log := logger.NewLogger("test")
