@@ -32,5 +32,7 @@ func main() {
 
 Should only print warn message
 ```bash
-LOG_LEVEL=warn go run .
+LOG_LEVEL=debug go run .
 ```
+
+![output](https://github.com/casonadams/simple-logger/examples/output.png)
