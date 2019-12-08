@@ -90,147 +90,152 @@ func (l *Logger) color(m string, c color) string {
 
 func (l *Logger) format(logLevel string, msg string) string {
 	prefix := ""
-	if l.Level >= level[logLevel] {
-		if l.Date {
-			prefix += fmt.Sprintf("%v ", time.Now().UTC().Format("2006-01-02 15:04:05.000"))
-		} else {
-			prefix += fmt.Sprintf("%v ", time.Now().UTC().Format("15:04:05.000"))
-		}
 
-		switch logLevel {
-		case "DEBUG":
-			prefix += l.color(logLevel, GRAY)
-		case "TRACE":
-			prefix += l.color(logLevel, CYAN)
-		case "INFO":
-			prefix += l.color(logLevel, BLUE)
-		case "WARN":
-			prefix += l.color(logLevel, YELLOW)
-		case "ERROR":
-			prefix += l.color(logLevel, RED)
-		case "FATAL":
-			prefix += l.color(logLevel, MAGENTA)
-		case "PANIC":
-			prefix += l.color(logLevel, DMAGENTA)
-		default:
-			prefix += logLevel
-		}
+	// Setup timesampe
+	if l.Date {
+		prefix += fmt.Sprintf("%v ", time.Now().UTC().Format("2006-01-02 15:04:05.000"))
+	} else {
+		prefix += fmt.Sprintf("%v ", time.Now().UTC().Format("15:04:05.000"))
+	}
 
-		// need a space here
-		prefix += " "
+	// Logging level
+	prefix += logLevel + " "
 
-		if l.Function {
-			_, file, line, _ := runtime.Caller(2)
-			prefix += fmt.Sprintf("[%v:%v] ", filepath.Base(file), line)
-		}
+	// Caller location
+	if l.Function {
+		_, file, line, _ := runtime.Caller(2)
+		prefix += fmt.Sprintf("[%v:%v] ", filepath.Base(file), line)
+	}
 
-		return (prefix + " " + msg)
+	return (prefix + msg)
+}
+
+// Debug logs debug messages
+func (l *Logger) Debug(msg string) string {
+	if l.Level >= level["DEBUG"] {
+		s := l.format(l.color("DEBUG", GRAY), msg)
+		fmt.Println(s)
+		return s
 	}
 	return ""
 }
 
-// Debug logs debug messages
-func (l *Logger) Debug(msg string) {
-	s := l.format("DEBUG", msg)
-	if s != "" {
-		fmt.Println(s)
-	}
-}
-
 // Debugf logs debug messages
-func (l *Logger) Debugf(format string, args ...interface{}) {
-	s := l.format("DEBUG", fmt.Sprintf(format, args...))
-	if s != "" {
+func (l *Logger) Debugf(format string, args ...interface{}) string {
+	if l.Level >= level["DEBUG"] {
+		s := l.format(l.color("DEBUG", GRAY), fmt.Sprintf(format, args...))
 		fmt.Println(s)
+		return s
 	}
+	return ""
 }
 
 // Trace logs trace messages
-func (l *Logger) Trace(msg string) {
-	s := l.format("TRACE", msg)
-	if s != "" {
+func (l *Logger) Trace(msg string) string {
+	if l.Level >= level["TRACE"] {
+		s := l.format(l.color("TRACE", CYAN), msg)
 		fmt.Println(s)
+		return s
 	}
+	return ""
 }
 
 // Tracef logs trace messages
-func (l *Logger) Tracef(format string, args ...interface{}) {
-	s := l.format("TRACE", fmt.Sprintf(format, args...))
-	if s != "" {
+func (l *Logger) Tracef(format string, args ...interface{}) string {
+	if l.Level >= level["TRACE"] {
+		s := l.format(l.color("TRACE", CYAN), fmt.Sprintf(format, args...))
 		fmt.Println(s)
+		return s
 	}
+	return ""
 }
 
 // Info logs info messages
-func (l *Logger) Info(msg string) {
-	s := l.format("INFO", msg)
-	if s != "" {
+func (l *Logger) Info(msg string) string {
+	if l.Level >= level["INFO"] {
+		s := l.format(l.color("INFO", BLUE), msg)
 		fmt.Println(s)
+		return s
 	}
+	return ""
 }
 
 // Infof logs imfo messages
-func (l *Logger) Infof(format string, args ...interface{}) {
-	s := l.format("INFO", fmt.Sprintf(format, args...))
-	if s != "" {
+func (l *Logger) Infof(format string, args ...interface{}) string {
+	if l.Level >= level["INFO"] {
+		s := l.format(l.color("INFO", BLUE), fmt.Sprintf(format, args...))
 		fmt.Println(s)
+		return s
 	}
+	return ""
 }
 
 // Warn logs warn messages
-func (l *Logger) Warn(msg string) {
-	s := l.format("WARN", msg)
-	if s != "" {
+func (l *Logger) Warn(msg string) string {
+	if l.Level >= level["WARN"] {
+		s := l.format(l.color("WARN", YELLOW), msg)
 		fmt.Println(s)
+		return s
 	}
+	return ""
 }
 
 // Warnf logs wann messages
-func (l *Logger) Warnf(format string, args ...interface{}) {
-	s := l.format("WARN", fmt.Sprintf(format, args...))
-	if s != "" {
+func (l *Logger) Warnf(format string, args ...interface{}) string {
+	if l.Level >= level["WARN"] {
+		s := l.format(l.color("WARN", YELLOW), fmt.Sprintf(format, args...))
 		fmt.Println(s)
+		return s
 	}
+	return ""
 }
 
 // Error logs error messages
-func (l *Logger) Error(msg string) {
-	s := l.format("ERROR", msg)
-	if s != "" {
+func (l *Logger) Error(msg string) string {
+	if l.Level >= level["ERROR"] {
+		s := l.format(l.color("ERROR", RED), msg)
 		fmt.Println(s)
+		return s
 	}
+	return ""
 }
 
 // Errorf logs error messages
-func (l *Logger) Errorf(format string, args ...interface{}) {
-	s := l.format("ERROR", fmt.Sprintf(format, args...))
-	if s != "" {
+func (l *Logger) Errorf(format string, args ...interface{}) string {
+	if l.Level >= level["ERROR"] {
+		s := l.format(l.color("ERROR", RED), fmt.Sprintf(format, args...))
 		fmt.Println(s)
+		return s
 	}
+	return ""
 }
 
 // Fatal logs fatal message and exits (1)
-func (l *Logger) Fatal(msg string) {
-	s := l.format("FATAL", msg)
+func (l *Logger) Fatal(msg string) string {
+	s := l.format(l.color("FATAL", MAGENTA), msg)
 	fmt.Println(s)
-	os.Exit(1)
+	defer os.Exit(1)
+	return s
 }
 
 // Fatalf logs fatal message and exits (1)
-func (l *Logger) Fatalf(format string, args ...interface{}) {
-	s := l.format("FATAL", fmt.Sprintf(format, args...))
+func (l *Logger) Fatalf(format string, args ...interface{}) string {
+	s := l.format(l.color("FATAL", MAGENTA), fmt.Sprintf(format, args...))
 	fmt.Println(s)
-	os.Exit(1)
+	defer os.Exit(1)
+	return s
 }
 
 // Panic logs fatal message and exits (1)
-func (l *Logger) Panic(msg string) {
-	s := l.format("PANIC", msg)
-	panic(s)
+func (l *Logger) Panic(msg string) string {
+	s := l.format(l.color("PANIC", DMAGENTA), msg)
+	defer panic(s)
+	return s
 }
 
 // Panicf logs fatal message and exits (1)
-func (l *Logger) Panicf(format string, args ...interface{}) {
-	s := l.format("PANIC", fmt.Sprintf(format, args...))
-	panic(s)
+func (l *Logger) Panicf(format string, args ...interface{}) string {
+	s := l.format(l.color("PANIC", DMAGENTA), fmt.Sprintf(format, args...))
+	defer panic(s)
+	return s
 }
