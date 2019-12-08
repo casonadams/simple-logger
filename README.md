@@ -2,8 +2,8 @@
 golang simple logger
 
 ## Env var options
-- LOG_LEVEL `[ debug, trace, info, warn, error, fatal, panic ]` sets logging level
-- LOG_LEVEL `[ 6, 5, 4, 3, 2, 1, 0 ]` can use numbers instead
+- LOG_LEVEL `[ debug, trace, info, warn, error, fatal ]` sets logging level
+- LOG_LEVEL `[ 6, 5, 4, 3, 2, 1 ]` can use numbers instead
 - LOG_DATE `[ false, 0 ]` remove date line from logs
 - LOG_COLOR `[ false, 0 ]` remove color from logs
 - LOG_FUNC `[ false, 0 ]` remove function from logs

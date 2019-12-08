@@ -2,7 +2,6 @@ package log
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -18,7 +17,6 @@ var level map[string]int = map[string]int{
 	"WARN":  3,
 	"ERROR": 2,
 	"FATAL": 1,
-	"PANIC": 0,
 }
 
 type color int
@@ -42,7 +40,6 @@ type Logger struct {
 	Color    bool
 	Function bool
 	UTC      bool
-	Log      *log.Logger
 }
 
 // NewLogger creates a new logger
@@ -75,15 +72,12 @@ func NewLogger(name string) *Logger {
 		tzUTC = false
 	}
 
-	logger := log.New(log.Writer(), "", 0)
-
 	return &Logger{
 		Level:    logLevel,
 		Date:     date,
 		Color:    lcolor,
 		Function: showFunc,
 		UTC:      tzUTC,
-		Log:      logger,
 	}
 }
 
@@ -94,7 +88,7 @@ func (l *Logger) color(m string, c color) string {
 	return m
 }
 
-func (l *Logger) print(logLevel string, msg string) {
+func (l *Logger) format(logLevel string, msg string) string {
 	prefix := ""
 	if l.Level >= level[logLevel] {
 		if l.Date {
@@ -130,84 +124,113 @@ func (l *Logger) print(logLevel string, msg string) {
 			prefix += fmt.Sprintf("[%v:%v] ", filepath.Base(file), line)
 		}
 
-		// the use of a shared logger requires some protection when setting the prefix
-		l.mu.Lock()
-		l.Log.SetPrefix(prefix)
-		l.Log.Printf(msg)
-		l.mu.Unlock()
+		return (prefix + " " + msg)
 	}
+	return ""
 }
 
 // Debug logs debug messages
 func (l *Logger) Debug(msg string) {
-	l.print("DEBUG", msg)
+	s := l.format("DEBUG", msg)
+	if s != "" {
+		fmt.Println(s)
+	}
 }
 
 // Debugf logs debug messages
 func (l *Logger) Debugf(format string, args ...interface{}) {
-	l.print("DEBUG", fmt.Sprintf(format, args...))
+	s := l.format("DEBUG", fmt.Sprintf(format, args...))
+	if s != "" {
+		fmt.Println(s)
+	}
 }
 
 // Trace logs trace messages
 func (l *Logger) Trace(msg string) {
-	l.print("TRACE", msg)
+	s := l.format("TRACE", msg)
+	if s != "" {
+		fmt.Println(s)
+	}
 }
 
 // Tracef logs trace messages
 func (l *Logger) Tracef(format string, args ...interface{}) {
-	l.print("TRACE", fmt.Sprintf(format, args...))
+	s := l.format("TRACE", fmt.Sprintf(format, args...))
+	if s != "" {
+		fmt.Println(s)
+	}
 }
 
 // Info logs info messages
 func (l *Logger) Info(msg string) {
-	l.print("INFO", msg)
+	s := l.format("INFO", msg)
+	if s != "" {
+		fmt.Println(s)
+	}
 }
 
 // Infof logs imfo messages
 func (l *Logger) Infof(format string, args ...interface{}) {
-	l.print("INFO", fmt.Sprintf(format, args...))
+	s := l.format("INFO", fmt.Sprintf(format, args...))
+	if s != "" {
+		fmt.Println(s)
+	}
 }
 
 // Warn logs warn messages
 func (l *Logger) Warn(msg string) {
-	l.print("WARN", msg)
+	s := l.format("WARN", msg)
+	if s != "" {
+		fmt.Println(s)
+	}
 }
 
 // Warnf logs wann messages
 func (l *Logger) Warnf(format string, args ...interface{}) {
-	l.print("WARN", fmt.Sprintf(format, args...))
+	s := l.format("WARN", fmt.Sprintf(format, args...))
+	if s != "" {
+		fmt.Println(s)
+	}
 }
 
 // Error logs error messages
 func (l *Logger) Error(msg string) {
-	l.print("ERROR", msg)
+	s := l.format("ERROR", msg)
+	if s != "" {
+		fmt.Println(s)
+	}
 }
 
 // Errorf logs error messages
 func (l *Logger) Errorf(format string, args ...interface{}) {
-	l.print("ERROR", fmt.Sprintf(format, args...))
+	s := l.format("ERROR", fmt.Sprintf(format, args...))
+	if s != "" {
+		fmt.Println(s)
+	}
 }
 
 // Fatal logs fatal message and exits (1)
 func (l *Logger) Fatal(msg string) {
-	l.print("FATAL", msg)
+	s := l.format("FATAL", msg)
+	fmt.Println(s)
 	os.Exit(1)
 }
 
 // Fatalf logs fatal message and exits (1)
 func (l *Logger) Fatalf(format string, args ...interface{}) {
-	l.print("FATAL", fmt.Sprintf(format, args...))
+	s := l.format("FATAL", fmt.Sprintf(format, args...))
+	fmt.Println(s)
 	os.Exit(1)
 }
 
 // Panic logs fatal message and exits (1)
 func (l *Logger) Panic(msg string) {
-	l.print("PANIC", msg)
-	panic("")
+	s := l.format("PANIC", msg)
+	panic(s)
 }
 
 // Panicf logs fatal message and exits (1)
 func (l *Logger) Panicf(format string, args ...interface{}) {
-	l.print("PANIC", fmt.Sprintf(format, args...))
-	panic("")
+	s := l.format("PANIC", fmt.Sprintf(format, args...))
+	panic(s)
 }
