@@ -39,3 +39,13 @@ LOG_LEVEL=debug go run .
 
 ## Example of an output
 ![Example Output](examples/output.png)
+
+## Tests
+
+```bash
+## all unit tests
+go test .
+
+## all tests including benchmarking
+go test -bench=.
+```
