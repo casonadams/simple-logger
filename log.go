@@ -92,10 +92,18 @@ func (l *Logger) format(logLevel string, msg string) string {
 	prefix := ""
 
 	// Setup timesampe
-	if l.Date {
-		prefix += fmt.Sprintf("%v ", time.Now().UTC().Format("2006-01-02 15:04:05.000"))
+	if l.UTC {
+		if l.Date {
+			prefix += fmt.Sprintf("%v ", time.Now().UTC().Format("2006-01-02 15:04:05.000"))
+		} else {
+			prefix += fmt.Sprintf("%v ", time.Now().UTC().Format("15:04:05.000"))
+		}
 	} else {
-		prefix += fmt.Sprintf("%v ", time.Now().UTC().Format("15:04:05.000"))
+		if l.Date {
+			prefix += fmt.Sprintf("%v ", time.Now().Format("2006-01-02 15:04:05.000"))
+		} else {
+			prefix += fmt.Sprintf("%v ", time.Now().Format("15:04:05.000"))
+		}
 	}
 
 	// Logging level

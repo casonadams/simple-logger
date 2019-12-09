@@ -809,7 +809,7 @@ func BenchmarkInfoWrite(b *testing.B) {
 	l := logger.NewLogger("test")
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		l.Info("ABCDEFGHIJLKMNOPQRSTUVWXYZ1234567890abcdefghijklmnopqrstuvwxyz")
+		l.Debug("Debug Message")
 	}
 }
 
